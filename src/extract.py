@@ -75,7 +75,6 @@ def extract_pages_with_text(source_pdf_path: str, output_pdf_path: str, search_t
             # print("New document closed.")
 
 
-# --- Example Usage ---
 
 source_file = os.path.join(os.getcwd(), 'data','WCEPRE_2024.pdf')  # <<< REPLACE with the path to your original PDF
 output_file = os.path.join(os.getcwd(), 'data','Annexure_A_Pages.pdf') # <<< Name for the new PDF file
