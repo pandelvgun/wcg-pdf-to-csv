@@ -9,6 +9,7 @@ readme = "README.md"
 python = "^3.13"
 camelot-py = "^1.0.0"
 tcl = "^0.2"
+pymupdf = "^1.25.5"
 
 
 [build-system]
