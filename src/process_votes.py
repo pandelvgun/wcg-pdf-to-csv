@@ -12,6 +12,13 @@ class Vote:
 
 class VoteFactory:
 
+    def __init__(self):
+        self.source_path = os.path.join(os.getcwd(), 'data', 'input')
+        self.output_path = os.path.join(os.getcwd(), 'data', 'output')
+
+    def create_vote_1():
+        pass
+
     def create_vote_2():
         pass
 
@@ -53,32 +60,22 @@ class VoteFactory:
 
 
 class VoteProcessor:
-    def __init__(self, pdf_path, output_parent_dir):
-        self.pdf_path = pdf_path
-        self.output_parent_dir = output_parent_dir
-
-
     def process_vote(self, vote):
         page_num = 1
-        output_dir = os.path.join(self.output_parent_dir, )
         for i in range(len(vote.table_names)):
             if page_num not in vote.conflict_pages:
                 self.write_table_to_csv(vote.source, vote.output, page_num, vote.table_names[i])
             page_num += 1
 
-    def write_table_to_csv(self, filename: str, output, page_num: int, table_name: str):
-        filename = os.path.join(self.pdf_path, filename)
+    def write_table_to_csv(self, source, output, page_num: int, table_name: str):
         page_num = str(page_num)
-        tables = camelot.read_pdf(filename, flavor='hybrid', pages=page_num)
+        tables = camelot.read_pdf(source, flavor='hybrid', pages=page_num)
         for table in tables:
             table.to_csv(f'{output}.csv')
 
 
 def main():
-    source = os.path.join(os.getcwd(), 'data', 'votes')
-    output_parent_dir = os.path.join(os.getcwd(), 'data', 'output')
-    vote_processor = VoteProcessor(source, output_parent_dir)
-    vote_processor.process_vote_1()
+    pass
 
 if __name__ == "__main__":
     main()
