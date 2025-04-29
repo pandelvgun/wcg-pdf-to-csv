@@ -3,7 +3,7 @@ import os
 
 
 class Vote:
-    def __init__(self, source, output, multi_table_pages, run_on_pages, tables):
+    def __init__(self, source, output, grouped_tables, continious_tables, tables):
         """
         creates a vote object
         each vote has a source file, output file, conflict pages, and tables
@@ -13,9 +13,9 @@ class Vote:
         """
         self.source = source
         self.output = output
-        self.multi_table_pages = multi_table_pages
-        self.run_on_pages = run_on_pages
-        self.tables = tables 
+        self.grouped_tables = grouped_tables # page numbers and table names of multi tables per page 
+        self.continious_tables = continious_tables # page numbers and table names of continious tables
+        self.tables = tables # default tables
 
 
 class VoteFactory:
@@ -26,8 +26,12 @@ class VoteFactory:
 
     # TODO: add processing logic - did it already in testing of concept
     # However some tables did not get processed. Need to fix
-    def create_vote_1():
-        pass
+    def create_vote_1(self):
+        vote = Vote(
+            source=os.path.join(self.source_path, 'Vote_1.pdf'),
+            output=os.path.join(self.output_path, 'vote_1'),
+        )
+        return vote
 
     def create_vote_2(self):
         vote = Vote(
@@ -113,35 +117,61 @@ class VoteFactory:
         )
         return vote
 
-    # NOTE: This vote has a lot of tables that take 2 pages for a single table
-    # need to investigate this case by itself
-    # for now conflict pages stores pages with 
-    # 1. multiple tables per page
-    # 2. tables that take 2 pages
     def create_vote_11(self):
         vote = Vote(
             source=os.path.join(self.source_path, 'Vote_11.pdf'),
             output=os.path.join(self.output_path, 'vote_11'),
-            run_on_pages=[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16],
+            grouped_tables=[
+                {"page": 20, "table_names": ['Table A.4.1', 'Table A.4.2']},
+                {"page": 21, "table_names": ['Table A.4.3', 'Table A.4.4']},
+                {"page": 22, "table_names": ['Table A.4.5', 'Table A.4.6']},
+                {"page": 23, "table_names": ['Table A.4.7', 'Table A.4.8']}
+            ],
+            continious_tables=[
+                {"start_page": 2, "table_name": "Table A.2"},
+                {"start_page": 4, "table_name": "Table A.2.1"},
+                {"start_page": 6, "table_name": "Table A.2.2"},
+                {"start_page": 8, "table_name": "Table A.2.3"},
+                {"start_page": 10, "table_name": "Table A.2.4"},
+                {"start_page": 12, "table_name": "Table A.2.5"},
+                {"start_page": 15, "table_name": "Table A.2.7"}
+            ],
             tables=['Table A.1', 'Table A.2.6', 'Table A.2.8', 'Table A.3', 'Table A.4']
         )
         return vote
 
+    # TODO: Find missing tables A.5.3 - A.5.5 (incl)
+    # not in pdf
     def create_vote_12(self):
         vote = Vote(
             source=os.path.join(self.source_path, 'Vote_12.pdf'),
             output=os.path.join(self.output_path, 'vote_12'),
-            multi_table_pages=[],
-            tables=['']
+            grouped_tables=[
+                {"page": 14, "table_names": ['Table A.4', 'Table A.4.1']},
+                {"page": 15, "table_names": ['Table A.4.2', 'Table A.4.3', 'Table A.4.4']},
+                {"page": 18, "table_names": ['Table A.5.1', 'Table A.5.2']},
+                {"page": 19, "table_names": ['Table A.5.6', 'Table A.5.7']}
+            ],
+            continious_tables=[
+                {"start_page": 2, "table_name": "Table A.2"},
+            ],
+            tables=['Table A.1', 'Table A.2.1', 'Table A.2.2', 'Table A.2.3', 'Table A.2.4', 'Table A.2.5', 'Table A.2.6', 'Table A.2.7', 'Table A.3.1', 'Table A.3.2', 'Table A.3.3', 'Table A.4.5', 'Table A.5']
         )
         return vote
 
+    # DONE
     def create_vote_13(self):
         vote = Vote(
             source=os.path.join(self.source_path, 'Vote_13.pdf'),
             output=os.path.join(self.output_path, 'vote_13'),
-            multi_table_pages=[],
-            tables=[]
+            grouped_tables=[
+                {"page": 14, "table_names": ['Table A.4.3', 'Table A.4.4']},
+                {"page": 17, "table_names": ['Table A.5.1', 'Table A.5.2']},
+            ],
+            continious_tables=[
+                {"start_page": 2, "table_name": "Table A.2"},
+            ],
+            tables=['Table A.1', 'Table A.2.1', 'Table A.2.2', 'Table A.2.3', 'Table A.2.4', 'Table A.3.1', 'Table A.3.2', 'Table A.3.3', 'Table A.4', 'Table A.4.1', 'Table A.4.2', 'Table A.4.5', 'Table A.5', 'Table A.5.3', 'Table A.5.4']
         )
         return vote
 
@@ -149,7 +179,10 @@ class VoteFactory:
         vote = Vote(
             source=os.path.join(self.source_path, 'Vote_14.pdf'),
             output=os.path.join(self.output_path, 'vote_14'),
-            multi_table_pages=[],
+            grouped_tables=[],
+            continious_tables=[
+                
+            ],
             tables=[]
         )
         return vote
